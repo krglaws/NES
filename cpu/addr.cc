@@ -1,7 +1,7 @@
 
-#include "cpu6510.h"
+#include "RP2A03.h"
 
-Cpu6510::Accumulator(void (instr*)(uint8_t)) {
+int RP2A03::Accumulator(void (instr*)(uint8_t)) {
 
   uint8_t a = GetA();
   a = instr(a);
@@ -12,7 +12,7 @@ Cpu6510::Accumulator(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::XReg(void (instr*)(uint8_t)) {
+int RP2A03::XReg(void (instr*)(uint8_t)) {
 
   uint8_t x = GetX();
   x = instr(x);
@@ -23,7 +23,7 @@ Cpu6510::XReg(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::YReg(void (instr*)(uint8_t)) {
+int RP2A03::YReg(void (instr*)(uint8_t)) {
 
   uint8_t y = GetY();
   y = instr(y);
@@ -34,7 +34,7 @@ Cpu6510::YReg(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::ImmediateRead(void (instr*)(uint8_t)) {
+int RP2A03::ImmediateRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -47,7 +47,7 @@ Cpu6510::ImmediateRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::ZeroPageRead(void (instr*)(uint8_t)) {
+int RP2A03::ZeroPageRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -61,7 +61,7 @@ Cpu6510::ZeroPageRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::ZeroPageReadWrite(uint8_t (instr*)(uint8_t)) {
+int RP2A03::ZeroPageReadWrite(uint8_t (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -77,7 +77,7 @@ Cpu6510::ZeroPageReadWrite(uint8_t (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::ZeroPageXRead(void (instr*)(uint8_t)) {
+int RP2A03::ZeroPageXRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -91,7 +91,7 @@ Cpu6510::ZeroPageXRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::ZeroPageYRead(void (instr*)(uint8_t)) {
+int RP2A03::ZeroPageYRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -105,7 +105,7 @@ Cpu6510::ZeroPageYRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::IndirectXRead(void (instr*)(uint8_t)) {
+int RP2A03::IndirectXRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -120,7 +120,7 @@ Cpu6510::IndirectXRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::IndirectYRead(void (instr*)(uint8_t)) {
+int RP2A03::IndirectYRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 1);
@@ -140,7 +140,7 @@ Cpu6510::IndirectYRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::AbsoluteRead(void (instr*)(uint8_t)) {
+int RP2A03::AbsoluteRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 2);
@@ -154,7 +154,21 @@ Cpu6510::AbsoluteRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::AbsoluteXRead(void (instr*)(uint8_t)) {
+int RP2A03::AbsoluteReadWrite(void (instr*)(uint8)) {
+
+  uint16_t pc = GetPc();
+  SetPc(pc + 2);
+
+  uint16_t addr = ReadWord(pc);
+  uint8_t arg = ReadByte(addr);
+
+  instr(arg);
+
+  
+}
+
+
+int RP2A03::AbsoluteXRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 2);
@@ -173,7 +187,7 @@ Cpu6510::AbsoluteXRead(void (instr*)(uint8_t)) {
 }
 
 
-Cpu6510::AbsoluteYRead(void (instr*)(uint8_t)) {
+int RP2A03::AbsoluteYRead(void (instr*)(uint8_t)) {
 
   uint16_t pc = GetPc();
   SetPc(pc + 2);

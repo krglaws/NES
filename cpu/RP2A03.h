@@ -1,15 +1,17 @@
 
-#ifndef CPU6502_H_
-#define CPU6502_H_
+#ifndef RP2A03_H_
+#define RP2A03_H_
+
+#include <inttypes.h>
 
 typedef enum { N=128, V=64, X=32, B=16, D=8, I=4, Z=2, C=1 } Flag;
 
-class Cpu6502 {
+class RP2A03 {
 
  public:
 
-  Cpu6502();
-  ~Cpu6502();
+  RP2A03();
+  ~RP2A03();
 
  private:
 
@@ -21,17 +23,6 @@ class Cpu6502 {
   uint8_t *mem_;
   void Write();
   void Read();
-
-/* ----------
- * buses
- */
-  uint8_t db_; /* data bus */
-  uint8_t GetDb();
-  void SetDb(uint8_t d);
-
-  uint16_t ab_; /* address bus */
-  uint16_t GetAb();
-  void SetAb(uint8_t d);
 
 /* ---------
  * registers
@@ -64,7 +55,9 @@ class Cpu6502 {
 /* ----------------
  * addressing modes
  */
-  int ImmediateRead(uint8_t (instr*)(uint8_t));
+  int Accumulator(void (instr*)(uint8_t));
+  int XReg(void (instr*)(uint8_t));
+  int YReg(void (instr*)(uint8_t));
 
   int AbsoluteRead(uint8_t (instr*)(uint8_t));
   int AbsoluteReadWrite(uint8_t (instr*)(uint8_t));
@@ -72,24 +65,26 @@ class Cpu6502 {
   int AbsoluteXReadWrite(uint8_t (instr*)(uint8_t));
   int AbsoluteYRead(uint8_t (instr*)(uint8_t));
 
+  int ImmediateRead(uint8_t (instr*)(uint8_t));
+
+  int IndirectRead(uint8_t (instr*)(uint8_t));
+  int IndirectXRead(uint8_t (instr*)(uint8_t));
+  int IndirectYRead(uint8_t (instr*)(uint8_t));
+
   int ZeroPageRead(uint8_t (instr*)(uint8_t));
   int ZeroPageReadWrite(uint8_t (instr*)(uint8_t));
   int ZeroPageXRead(uint8_t (instr*)(uint8_t));
   int ZeroPageXReadWrite(uint8_t (instr*)(uint8_t));
   int ZeroPageYRead(uint8_t (instr*)(uint8_t));
 
-  int IndirectRead(uint8_t (instr*)(uint8_t));
-  int IndirectXRead(uint8_t (instr*)(uint8_t));
-  int IndirectYRead(uint8_t (instr*)(uint8_t));
-
 /* ------------
  * instructions
  */
-  uint8_t Adc(uint8_t arg);
-  uint8_t And(uint8_t arg);
-  uint8_t Asl(uint8_t arg);
-  uint8_t Bcc(uint8_t arg);
-  uint8_t Bcs(uint8_t arg);
+  void Adc(uint8_t arg);
+  void And(uint8_t arg);
+  void Asl(uint8_t arg);
+  int Bcc(uint8_t arg);
+  int Bcs(uint8_t arg);
   uint8_t Beq(uint8_t arg);
   uint8_t Bit(uint8_t arg);
   uint8_t Bmi(uint8_t arg);
